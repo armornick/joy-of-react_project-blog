@@ -1,17 +1,16 @@
-import React from 'react';
-import { Code } from 'bright';
+import React from "react";
+import { Code } from "bright";
 
-import theme from './theme';
-import styles from './CodeSnippet.module.css';
+import theme from "./theme";
+import styles from "./CodeSnippet.module.css";
 
 function CodeSnippet(props) {
-  return (
-    <Code
-      {...props}
-      theme={theme}
-      className={styles.wrapper}
-    />
-  );
+	const lang = props.className
+		? props.className?.replace("language-", "")
+		: undefined;
+	return (
+		<Code {...props} theme={theme} lang={lang} className={styles.wrapper} />
+	);
 }
 
 export default CodeSnippet;
