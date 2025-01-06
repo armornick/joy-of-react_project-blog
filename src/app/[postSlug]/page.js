@@ -1,13 +1,12 @@
 import React from "react";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import { notFound } from "next/navigation";
 import { loadBlogPost } from "@/helpers/file-helpers";
 import { BLOG_TITLE } from "@/constants";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import { COMPONENT_MAP } from "@/helpers/mdx-components";
 import BlogHero from "@/components/BlogHero";
 
 import styles from "./postSlug.module.css";
-import CodeSnippet from "@/components/CodeSnippet";
-import dynamic from "next/dynamic";
-import { notFound } from "next/navigation";
 
 const loadBlogPostCached = React.cache(loadBlogPost);
 
@@ -38,15 +37,7 @@ async function BlogPost({ params }) {
 			<div className={styles.page}>
 				<MDXRemote
 					source={blogPost.content}
-					components={{
-						pre: CodeSnippet,
-						DivisionGroupsDemo: dynamic(() =>
-							import("@/components/DivisionGroupsDemo")
-						),
-						CircularColorsDemo: dynamic(() =>
-							import("@/components/CircularColorsDemo")
-						),
-					}}
+					components={COMPONENT_MAP}
 				/>
 			</div>
 		</article>
