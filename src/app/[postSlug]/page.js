@@ -7,12 +7,14 @@ import BlogHero from "@/components/BlogHero";
 import styles from "./postSlug.module.css";
 import CodeSnippet from "@/components/CodeSnippet";
 import dynamic from "next/dynamic";
+import { notFound } from "next/navigation";
 
 const loadBlogPostCached = React.cache(loadBlogPost);
 
 export async function generateMetadata({ params }) {
 	const { postSlug } = await params;
 	const blogPost = await loadBlogPostCached(postSlug);
+	if (!blogPost) return undefined;
 
 	return {
 		title: `${blogPost.frontmatter.title} • ${BLOG_TITLE}`,
@@ -23,6 +25,9 @@ export async function generateMetadata({ params }) {
 async function BlogPost({ params }) {
 	const { postSlug } = await params;
 	const blogPost = await loadBlogPostCached(postSlug);
+	if (!blogPost) {
+		notFound();
+	}
 
 	return (
 		<article className={styles.wrapper}>
