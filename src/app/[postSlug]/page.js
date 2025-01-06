@@ -6,6 +6,7 @@ import BlogHero from "@/components/BlogHero";
 
 import styles from "./postSlug.module.css";
 import CodeSnippet from "@/components/CodeSnippet";
+import dynamic from "next/dynamic";
 
 const loadBlogPostCached = React.cache(loadBlogPost);
 
@@ -34,6 +35,9 @@ async function BlogPost({ params }) {
 					source={blogPost.content}
 					components={{
 						pre: CodeSnippet,
+						DivisionGroupsDemo: dynamic(() =>
+							import("@/components/DivisionGroupsDemo")
+						),
 					}}
 				/>
 			</div>
