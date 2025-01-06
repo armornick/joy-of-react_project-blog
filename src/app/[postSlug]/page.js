@@ -38,6 +38,9 @@ async function BlogPost({ params }) {
 						DivisionGroupsDemo: dynamic(() =>
 							import("@/components/DivisionGroupsDemo")
 						),
+						CircularColorsDemo: dynamic(() =>
+							import("@/components/CircularColorsDemo")
+						),
 					}}
 				/>
 			</div>
