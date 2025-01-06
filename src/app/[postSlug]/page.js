@@ -1,26 +1,35 @@
-import React from 'react';
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import React from "react";
+import { MDXRemote } from "next-mdx-remote/rsc";
 
-import BlogHero from '@/components/BlogHero';
+import BlogHero from "@/components/BlogHero";
 
-import styles from './postSlug.module.css';
+import styles from "./postSlug.module.css";
+import matter from "gray-matter";
 
-function BlogPost() {
-  return (
-    <article className={styles.wrapper}>
-      <BlogHero
-        title="Example post!"
-        publishedOn={new Date()}
-      />
-      <div className={styles.page}>
-        <p>This is where the blog post will go!</p>
-        <p>
-          You will need to use <em>MDX</em> to render all of
-          the elements created from the blog post in this
-          spot.
-        </p>
-      </div>
-    </article>
-  );
+async function loadBlogPost(slug) {
+	const filePath = join(process.cwd(), "content", slug + ".mdx");
+	const rawFile = await readFile(filePath, "utf-8");
+	const fileData = matter(rawFile);
+	return fileData;
+}
+
+async function BlogPost({ params }) {
+	const { postSlug } = await params;
+	const blogPost = await loadBlogPost(postSlug);
+
+	return (
+		<article className={styles.wrapper}>
+			<BlogHero
+				title={blogPost.data.title}
+				publishedOn={blogPost.data.publishedOn}
+			/>
+			<div className={styles.page}>
+				<MDXRemote source={blogPost.content} />
+			</div>
+		</article>
+	);
 }
 
 export default BlogPost;
